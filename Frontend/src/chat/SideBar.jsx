@@ -7,8 +7,13 @@ import { HiOutlineStatusOnline } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import 'bootstrap/dist/css/bootstrap.min.css';
 const SideBar = () => {
+
+  // const handleClick = () => {
+  //   alert('Clicked')
+  // }
   return (
-    <div className="d-flex flex-column justify-content align-items-center vh-100 position-fixed top-0 start-0"  style={{width:"50px",height:"100", background: "linear-gradient(to left,rgb(251, 197, 0),rgb(255, 94, 0))", padding: "20px 0", zIndex: 1050, }} >
+    <div className="d-flex flex-column justify-content align-items-center vh-100 position-fixed top-0 start-0 "  style={{width:"50px",height:"100", background: "linear-gradient(to right, #56ccf2, #2f80ed)", zIndex: 1050, }}
+  >
     <FaPowerOff size={30} color='white' />
     <LuMessageSquareMore size={30} color='white' style={{marginTop :"40px"}} />
     <IoMdPersonAdd size={30} color='white' style={{marginTop:"40px"}} />
