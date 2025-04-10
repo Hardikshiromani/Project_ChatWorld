@@ -1,63 +1,69 @@
-const {DataTypes, Sequelize, Model} = require("sequelize");
+const sequelize = require('sequelize');
+const db= require('../db');
+const DataTypes = sequelize.DataTypes;
 
-const Message= Sequelize.define("message",{
-    messageId:{
+const Messages= db.define('message',{
+   messageId:{
     type:DataTypes.INTEGER,
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
-    },
-    senderId:{
-        type:DataTypes.BIGINT.UNSIGNED,
-        allowNull:true,
-        reference:{
-            Model:'user',
-            key:'userId',
-        },
-        onDelete:'CASCADE',
-    },
-    recieverId:{
-        type:DataTypes.BIGINT.UNSIGNED,
-        allowNull:true,
-        reference:{
-            Model:'user',
-            key:'userId',
-        },
-        onDelete:'CASCADE',
-    },
-    content :{
-        type:DataTypes.TEXT,
-        allowNull:false,
-    },
-    sentAt:{
-        type:DataTypes.DATE,
-        allowNull:false,
-        defaultValue:DataTypes.NOW,
-    },
-    isRead:{
-        type:DataTypes.TINYINT(1),
-            allowNull:true,
-            defaultValue:DataTypes.NOW,
-    },
+    autoIncrement:true,
+    primaryKey:true,    
+   },
+   senderId:{
+    type:DataTypes.BIGINT.UNSIGNED,
+    allowNull:false,
 
-    type:{
-        type:DataTypes.STRING(10),
-        allowNull: true,
+    references:{
+        model:'user',
+        key:"userid",
     },
-    roomId:{
-        type:DataTypes.BIGINT.UNSIGNED,
-        allowNull:true,
+    onDelete:'CASCADE',
+   },
+   receiverId:{
+    type:DataTypes.BIGINT.UNSIGNED,
+    allowNull:true,
+
+    references:{
+        model:'user',
+        key:"userid",
     },
+    onDelete:'CASCADE',
+   },
+   content:{
+    type:DataTypes.TEXT,
+    allowNull:false,
+
+   },
+   sentAt:{
+    type: DataTypes.DATE,
+    allowNull:false,
+    defaultValue: DataTypes.NOW,
+   },
+   isRead:{
+    type:DataTypes.BOOLEAN,
+    defaultValue:false,
+   },
+   type:{
+    type:DataTypes.ENUM('text','image','video','audio'),
+    allowNull:false,
+   },
+   roomId:{
+    type:DataTypes.INTEGER.UNSIGNED,
+    allowNull:true,
+    references:{
+        model:'chatroom',
+        key:'roomId',
+    },
+    onDelete:'CASCADE',
+  },
 },
 {
-    tableName: 'message',
-    timestamps: false,
-});
+    tableName: "message",
+   createdAt: false,
+   updatedAt:false,
+})
 
-Message.associate = (models) => {
-    Message.belongsTo(models.User, { foreignKey: "senderId", as: "sender" });
-    Message.belongsTo(models.User, { foreignKey: "receiverId", as: "receiver" });
-  };
+module.exports=Messages;
 
-  module.exports=Message;
+
+
 

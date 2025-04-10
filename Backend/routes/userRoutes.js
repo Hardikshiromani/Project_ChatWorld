@@ -6,7 +6,6 @@ const {createUser,updateUser,deleteUser,searchUser} = require('../controllers/pr
 
 
 
-
 router.get("/search", searchUser);
 router.delete("/deleteuser/:userid", deleteUser);
 router.put("/updateuser/:userid", updateUser);

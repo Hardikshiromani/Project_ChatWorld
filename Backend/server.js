@@ -1,8 +1,28 @@
 const express = require("express");
-const db = require("./config/db"); // Import the database connection
-const userRoutes = require("./routes/userRoutes");
+const http = require("http");
+const { Server } = require("socket.io");
 const app = express();
-// require("dotenv").config();
+const server = http.createServer(app);
+const{intialiseSocket}= require("./controllers/chatController");
+require("dotenv");
+const db = require("./db");
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+const userRoutes = require("./routes/userRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
+
+intialiseSocket(io);
+app.get("/", (req, res) => {
+  res.send("Hello, Server is Running!");
+});
 
 
 app.use(express.json()); //middleware for parsing json
@@ -10,14 +30,15 @@ app.use(express.json()); //middleware for parsing json
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", userRoutes);
 
-
-const PORT = 5001;
+const PORT = 5070;
 
 app.get("/", (req, res) => {
   res.send("Hello, Server is Running!");
 });
 
-// ✅ Route to Check Database Connection
+// console.log("DB_USER in server.js:", process.env.DB_USER);
+
+//  Route to Check Database Connection
 app.get("/check-db", async (req, res) => {
   try {
     await db.authenticate(); //check connection on suquelize
@@ -28,6 +49,7 @@ app.get("/check-db", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });

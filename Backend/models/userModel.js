@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 
-const db = require("../config/db");
+const db = require("../db");
 
-const Users = db.define("user", {
+const User = db.define("user", {
   userid: {
     type: DataTypes.BIGINT.UNSIGNED,
     autoIncrement: true,
@@ -29,15 +29,15 @@ const Users = db.define("user", {
     type:DataTypes.STRING(20),
     allowNull: true,
    },
+   lastseen: {
+    type: DataTypes.DATE,       // Sequelize's format
+    field: 'lastseen',          // Match column name in DB
+    allowNull: true,
+  }
    },  {
     tableName: "user",
     timestamps: false,
 });
-//Associations
-Users.associations=(models)=>{
-  Users.hasMany(models.MessageChannel,{foreignKey:'senderId', as:'sentMessages'});
-  Users.hasMany(models.Message,{foreignKey:'receiverId',as:'recievedMessages'});
-}
 
 
-module.exports = Users;
+module.exports = User;
