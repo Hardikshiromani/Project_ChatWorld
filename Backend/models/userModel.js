@@ -10,12 +10,12 @@ const User = db.define("user", {
   },
   username: {
     type: DataTypes.STRING(255),
-    allowNull: false,
+    allowNull: true,
     unique: true,
   },
   password: { 
     type: DataTypes.STRING(255),
-    allowNull: false,
+    allowNull: true,
    },
    bio:{
     type:DataTypes.TEXT,

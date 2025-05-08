@@ -20,7 +20,7 @@ const UserProfile = ({ selectedChat,onClose }) => {
           <h3>Bio</h3>
             </div>  
             <div style={styles.bio}>
-              <p>The new Bio is here askdjjkfdgkfdhgjfgkd</p>
+              <p>The new Bio is here Loading...</p>
             </div>
          
         </div>

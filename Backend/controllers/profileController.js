@@ -4,28 +4,50 @@ const Users = require("../models/userModel");
 require("dotenv").config();
 
 const createUser = async (req, res) => {
+  // try {
+  //   const { username, password, bio, DOB } = req.body;
+
+  //     // const phone= phoneNumber||null;
+  //   // if user exists already
+  //   const existingUser = await Users.findOne({ where: { username } });
+
+  //   if (existingUser) {
+  //     return res.status(400).json({ message: "User already exists" });
+  //   }
+
+  //   const newUser = await Users.create({
+  //     username,
+  //     password,
+  //     bio,
+  //     DOB,
+  //     // phoneNumber:phone,
+  //   });
+
+  //   res
+  //     .status(201)
+  //     .json({ message: "User created successfully", data: newUser });
+  // }
   try {
+    // const { userid } = req.params; //get userId from URL params
     const { username, password, bio, DOB, phoneNumber } = req.body;
 
-    //   const phone= phoneNumber||null;
-    // if user exists already
-    const existingUser = await Users.findOne({ where: { username } });
+    //find the user by userID
 
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
-    }
+    const user = await Users.findOne({where:{phoneNumber}});
+    // if (!user) {
+    //   return res.status(404).json({ message: "User not found" });
+    // }
+    //update feilds if provivded in the request
 
-    const newUser = await Users.create({
-      username,
-      password,
-      bio,
-      DOB,
-      phoneNumber,
-    });
+     user.username = username;
+    user.password = password;
+     user.bio = bio;
+     user.DOB = DOB;
+    // user.phoneNumber = phoneNumber;
 
-    res
-      .status(201)
-      .json({ message: "User created successfully", data: newUser });
+    //save the updated user
+    await user.save();
+    res.status(200).json({ message: "User Created Successfully", data: user });
   } catch (error) {
     res
       .status(500)

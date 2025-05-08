@@ -1,16 +1,20 @@
 const express = require("express");
 const http = require("http");
+const cors = require("cors");
 const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const{intialiseSocket}= require("./controllers/chatController");
-require("dotenv");
+require("dotenv").config(); // Load environment variables from .env file
 const db = require("./db");
 const io = new Server(server, {
   cors: {
     origin: "*",
   },
 });
+
+app.use(cors());
+
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 
@@ -28,9 +32,9 @@ app.get("/", (req, res) => {
 app.use(express.json()); //middleware for parsing json
 
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/user", userRoutes);
+// app.use("/api/user", userRoutes);
 
-const PORT = 5070;
+const PORT = 5000;
 
 app.get("/", (req, res) => {
   res.send("Hello, Server is Running!");

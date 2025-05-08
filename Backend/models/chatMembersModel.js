@@ -39,7 +39,34 @@ const ChatMembers=db.define("ChatMembers",{
             key:"roomid",
         },
         onDelete:"CASCADE",
-    }
+    },
+
+    lastReadMessageId:{
+        type:DataTypes.INTEGER,
+        allowNull:true,
+        // references:{
+        //     model:"message",
+        //     key:"messageid",
+        // },
+        // onDelete:"SET NULL",
+        defaultValue:null
+    },
+
+    isPinned:{
+        type:DataTypes.TINYINT(1),
+        allowNull:true,
+        defaultValue:0,
+    },
+    deletedAt:{
+        type:DataTypes.DATE,
+        allowNull:true,
+        defaultValue:null,
+    },
+    lastSeenAt:{
+        type:DataTypes.DATE,
+        allowNull:true,
+        defaultValue:null,
+    },
 },    {
         tableName:"chatmembers",
         timestamps:false,

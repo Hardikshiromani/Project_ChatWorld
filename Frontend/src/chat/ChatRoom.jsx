@@ -1,15 +1,33 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { MdCall } from "react-icons/md";
-// Dummy image for profile pictures (replace with actual image URLs)
-// const pic1 = "https://via.placeholder.com/40";
+import { BsEmojiSmile } from "react-icons/bs";
 import { FaVideo } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
+import ChatInput from "./chatInput"
+
+
+
+
+
+
+
+
 
 const ChatRoom = ({ selectedChat, setShowProfile }) => {
   const [messages, setMessages] = useState([]); //store chat messages
   const [newMessage, setNewMessage] = useState(""); //store new message
+  const [hoverIcon,sethoveredIcon] =useState(null);
 
+  
+
+  const iconStyle = (iconName) => ({
+    fontSize: "20px",
+    cursor: "pointer",
+    color: hoverIcon === iconName ? "#007bff" : "#333",
+    transition: "color 0.1s",
+  });
+  
   if (!selectedChat || Object.keys(selectedChat).length === 0) {
     return (
       <div style={styles.container}>
@@ -27,12 +45,36 @@ const ChatRoom = ({ selectedChat, setShowProfile }) => {
     const messageData = {
       sender: "You",
       text: newMessage, // Change this based on the logged-in user
+      timestamp: getCurrentTime(), // Add timestamp
     };
 
     setMessages([...messages, messageData]); // Add new message to the array
     setNewMessage(""); // Clear input field
   };
 
+
+
+  const getCurrentTime=()=>{
+  const now =new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 || 12; // convert to 12-hour format
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  return `${formattedHours}:${formattedMinutes} ${ampm}`;
+
+  }
+  useEffect(() => {
+    if (selectedChat && selectedChat.name) {
+      setMessages([
+        { sender: "You", text: "Hey there!",timestamp: getCurrentTime() },
+        { sender: selectedChat.name, text: "Hi! How are you?" ,timestamp: getCurrentTime()},
+        { sender: "You", text: "I’m doing great, thanks!",timestamp: getCurrentTime() },
+        { sender: selectedChat.name, text: "Glad to hear that.",timestamp: getCurrentTime() }
+      ]);
+    }
+  }, [selectedChat]);
+  
   return (
     <div style={styles.container}>
       {/* Chat Header */}
@@ -42,16 +84,34 @@ const ChatRoom = ({ selectedChat, setShowProfile }) => {
           alt="Profile"
           style={styles.profilePic}
         />
-        <h3>{selectedChat.name}</h3>
-
+        <div style={styles.nameStatus}>
+        <h3 style={styles.name}>{selectedChat.name}</h3>
+        <p style={styles.status}>online</p>
+        </div>
         <div style={styles.icons}>
           <AiOutlineUser
-            style={styles.icons}
+            style={iconStyle("user")}
             onClick={() => setShowProfile(true)}
+            onMouseEnter={() => sethoveredIcon("user")}
+            onMouseLeave={() => sethoveredIcon(null)}
+
           />
-          <FaVideo style={styles.icons} />
-          <MdCall style={styles.icons} />
-          <BsThreeDotsVertical style={styles.icons} />
+          <FaVideo style={iconStyle("video")}
+           onMouseEnter={() => sethoveredIcon("video")}
+           onMouseLeave={() => sethoveredIcon(null)}
+
+          />
+          <MdCall style={iconStyle("call")}
+          
+          onMouseEnter={() => sethoveredIcon("call")}
+          onMouseLeave={() => sethoveredIcon(null)}
+/>
+          <BsThreeDotsVertical style={iconStyle("dots")}
+          
+          onMouseEnter={() => sethoveredIcon("dots")}
+          onMouseLeave={() => sethoveredIcon(null)}
+/>
+     
         </div>
       </div>
 
@@ -59,29 +119,21 @@ const ChatRoom = ({ selectedChat, setShowProfile }) => {
       <div style={styles.chatArea}>
         {messages.map((msg, index) => (
           <div key={index} style={styles.messageContainer(msg.sender === "You")}>
-
-
-          <p  style={styles.messageBubble(msg.sender === "You")}>
+            <div style={styles.messageBubble(msg.sender === "You")}>
+          {/* <p  style={styles.messageBubble(msg.sender === "You")}> */}
+          <p style={styles.messageText}>
             <strong>{msg.sender}:</strong> {msg.text}
           </p>
+          <small style={styles.timestamp}> {msg.timestamp}</small>
+          </div>
           </div>
         ))}
       </div>
 
-      {/* Chat Input */}
-      <div style={styles.inputArea}>
-        <input
-          type="text"
-          placeholder="Type a message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          style={styles.input}
-        />
-        <button style={styles.sendButton} onClick={sendMessage}>
-          Send
-        </button>
-      </div>
+      <ChatInput newMessage={newMessage}
+       setNewMessage={setNewMessage}
+       sendMessage={sendMessage}
+       />
     </div>
   );
 };
@@ -91,44 +143,77 @@ const styles = {
   messageContainer: (isSender) => ({
     display: "flex",
     justifyContent: isSender ? "flex-end" : "flex-start", // Align right if sent by user
-    // background: "linear-gradient(to right, #56ccf2, #2f80ed)",
     margin:"5px 0",
   }),
   messageBubble:(isSender)=>({
-  background: isSender ? "linear-gradient(to right, #56ccf2, #2f80ed)" : "white",
+  background: isSender ? "linear-gradient(to right, #56ccf2, #2f80ed)" : "linear-gradient(to right,rgb(33, 255, 185), rgb(0, 255, 128))",
   padding: "8px 12px",
     borderRadius: "9px",
     width: "fit-content",
     maxWidth: "30%",  // Ensures long messages wrap properly
     wordWrap: "break-word",
     alignSelf: isSender ? "flex-end" : "flex-start",
+    display:"flex",
+    flexDirection:"column",
+    alignItems:"flex-end",
+
 
 
   }),
   container: {
     flex: 1,
     background: "#f9f9f9",
-
     padding: "10px",
     minHeight: "660px",
     marginLeft: "10px",
-    // height: "200px",
   },
+  timestamp: {
+    fontSize: "10px",
+    color: "#eee",
+    marginTop: "4px",
+    alignSelf: "flex-end",
+  }
+,   chatArea: {
+  flex: 1, // important to expand the chat area
+  padding: "10px",
+  overflowY: "auto", // this makes it scrollable!
+  height: "calc(100vh - 150px)", // or whatever height fits your header + input
+  backgroundColor: "#f2f2f2",
+},
   icons: {
     display: "flex",
     justifyContent: "space-between",
     marginLeft: "auto",
     gap: "20px",
+    
   },
   header: {
     display: "flex",
     alignItems: "center",
     paddingBottom: "10px",
     justifyContent: "space-between",
-    // background: "linear-gradient(to right, #56ccf2, #2f80ed)",
-    // background: "linear-gradient(to right, #56ccf2, #2f80ed)",
     borderBottom: "1px solid #ddd",
   },
+
+  nameStatus: {
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: "10px",
+    lineHeight: "1",
+  },
+  
+  name: {
+    margin: "0",
+    padding: "0",
+  },
+  status: {
+    fontSize: "12px",
+    color: "green",
+    fontWeight: "bold",
+    margin: "0",
+    padding:"0" // closer to name
+  },
+  
   profilePic: {
     width: "40px",
     height: "40px",
@@ -139,8 +224,9 @@ const styles = {
     marginTop: "20px",
     minHeight: "570px",
     padding: "10px",
-    // background: "rgb(19, 137, 254)",
     borderRadius: "5px",
+    display: "flex",
+
     flexDirection: "column",
   },
   inputArea: {
@@ -174,5 +260,4 @@ const styles = {
   },
 };
 
-// export { chatData };
 export default ChatRoom;
