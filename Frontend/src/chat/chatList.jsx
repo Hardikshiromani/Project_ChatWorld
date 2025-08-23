@@ -1,30 +1,62 @@
-
 import React, { useState, useRef, useEffect } from "react";
-import pic1 from "../assets/pic1.png";
-
-const ChatList = ({ onSelectChat }) => {
-  const [search, setSearch] = useState("");
-  const [hoveredId, setHoverId] = useState(null);
+import pic1 from "../assets/pic1.png"; // Default profile image
+import axios from "axios";
+// ChatList component for displaying available chats
+const ChatList = ({ chats, onSelectChat }) => {
+  // State variables for UI interactions
+  const [search, setSearch] = useState(""); // Search input state
+  const [hoveredId, setHoverId] = useState(null); // Hover state for chat items
   const [width, setWidth] = useState(300); // Initial sidebar width
-  const isResizing = useRef(false);
+  const isResizing = useRef(false); // Ref for tracking resizing action
+  const [results, setResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+   const [query, setQuery]= useState("");
+  // Retrieve user details from local storage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.id;
 
-  const chats = [
-    { id: 1, name: "Alice", message: "Hey, how are you?", profilePic: pic1 },
-    { id: 2, name: "Bob", message: "Let's meet tomorrow!", profilePic: pic1 },
-    { id: 3, name: "Charlie", message: "Check out this link!", profilePic: pic1 },
-    { id: 4, name: "David", message: "Thanks for checking out!", profilePic: pic1 },
-    { id: 5, name: "Eve", message: "I'm on my way!", profilePic: pic1 },
-    { id: 6, name: "Alice", message: "Hey, how are you?", profilePic: pic1 },
-    { id: 7, name: "Bob", message: "Let's meet tomorrow!", profilePic: pic1 },
-    { id: 8, name: "Charlie", message: "Check out this link!", profilePic: pic1 },
-    { id: 9, name: "David", message: "Thanks for checking out!", profilePic: pic1 },
-    { id: 10, name: "Eve", message: "I'm on my way!", profilePic: pic1 },
-  ];
 
-  const filteredChats = chats.filter(chat =>
-    chat.name.toLowerCase().includes(search.toLowerCase())
+
+ useEffect(() => {
+    if (!searchTerm) return;
+
+    const delayDebounce = setTimeout(() => {
+      axios.get(`http://localhost:5000/api/user/Users?username=${searchTerm}`)
+        .then(res => setResults(res.data.data))
+        .catch(err => console.log(err));
+    }, 300); // debounce for 300ms
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
+
+
+  // Function to determine chat display name
+  const getDisplayName = (chat) => {
+    const isGroupChat = chat.receiverId === null;
+
+    if (isGroupChat) {
+      return chat.chatroom?.roomName || "Unnamed Group"; // Return group chat name
+    }
+
+    return chat.senderId === userId
+      ? chat.receiver?.username || "Unknown"
+      : chat.sender?.username || "Unknown"; // Return sender or receiver name
+  };
+
+  // Filter private and group chats relevant to the user
+  const privateChatsOnly = chats.filter(
+    (chat) =>
+      (chat.receiverId !== null &&
+        (chat.receiverId === userId || chat.senderId === userId)) ||
+      (chat.receiverId === null && chat.roomId && chat.chatroom?.roomName)
   );
 
+  // Apply search filter to the chat list
+  const filteredChats = privateChatsOnly.filter((chat) =>
+    getDisplayName(chat).toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Handlers for resizing the chat list sidebar
   const handleMouseDown = () => {
     isResizing.current = true;
   };
@@ -42,6 +74,7 @@ const ChatList = ({ onSelectChat }) => {
     isResizing.current = false;
   };
 
+  // Attach resize event listeners on mount and clean up on unmount
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
@@ -51,50 +84,107 @@ const ChatList = ({ onSelectChat }) => {
     };
   }, []);
 
+  // Function to fetch profile photo based on chat type
+  const getProfilePhoto = (chat) => {
+    if (chat.receiverId === null) {
+      return chat.chatroom?.profilePhoto
+        ? `http://localhost:5000${chat.chatroom.profilePhoto}`
+        : pic1;
+    }
+
+    return chat.senderId !== userId
+      ? chat.sender?.profilePhoto
+        ? `http://localhost:5000${chat.sender.profilePhoto}`
+        : pic1
+      : chat.receiver?.profilePhoto
+      ? `http://localhost:5000${chat.receiver.profilePhoto}`
+      : pic1;
+  };
+useEffect(() => {
+  if (searchTerm.trim() === "") {
+    setResults([]); // ⬅️ Clear suggestions when search box is empty
+  }
+}, [searchTerm]);
+
+
   return (
     <div
       className="chat-list-container"
       style={{ ...styles.container, width: `${width}px`, marginLeft: "50px" }}
     >
+      {/* Search Header */}
       <h4 style={{ marginBottom: "10px" }}>Messages</h4>
       <input
         type="text"
         placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         style={styles.searchBar}
       />
 
-      {/* Scrollable Wrapper */}
+      {/* Scrollable Chat List */}
       <div style={styles.scrollWrapper}>
+        
+      {results.length > 0 && (
+        <ul className="suggestions" style={styles.list}>
+          {results.map(chat => (
+            <li key={chat.id}   onClick={() =>
+    onSelectChat({
+      receiverId: user.id,
+      senderId: chat.id,
+      sender: user,
+      receiver: chat,
+      isGroup: false,
+      roomId: null,
+       messageId: `search-${chat.id}`,
+    })
+  } style={{
+                ...styles.chatItem,
+                backgroundColor:
+                  hoveredId === chat.messageId ? "#f6f6f6" : "#fff",
+              }} >
+              <img src={chat.profilePic} alt="profile"   style={styles.profilePic}/>
+              <strong>{chat.username}</strong>
+              
+              {/* <p style= {styles.message}>{chat.bio}</p> */}
+            </li>
+          ))}
+        </ul>
+      )}
         <ul style={styles.list}>
           {filteredChats.map((chat) => (
             <li
-              key={chat.id}
+              key={chat.messageId}
               onClick={() => onSelectChat(chat)}
-              onMouseEnter={() => setHoverId(chat.id)}
+              onMouseEnter={() => setHoverId(chat.messageId)}
               onMouseLeave={() => setHoverId(null)}
               style={{
                 ...styles.chatItem,
-                backgroundColor: hoveredId === chat.id ? "#f6f6f6" : "#fff",
+                backgroundColor:
+                  hoveredId === chat.messageId ? "#f6f6f6" : "#fff",
               }}
             >
-              <img src={chat.profilePic} alt="Profile" style={styles.profilePic} />
+              <img
+                src={getProfilePhoto(chat)}
+                alt="Profile"
+                style={styles.profilePic}
+              />
               <div>
-                <strong>{chat.name}</strong>
-                <p style={styles.message}>{chat.message}</p>
+                <strong>{getDisplayName(chat)}</strong>
+                <p style={styles.message}>{chat.content}</p>
               </div>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Resizer */}
+      {/* Sidebar Resizer */}
       <div onMouseDown={handleMouseDown} style={styles.resizer} />
     </div>
   );
 };
 
+// Styles for the ChatList component
 const styles = {
   container: {
     height: "100vh",

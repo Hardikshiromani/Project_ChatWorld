@@ -1,10 +1,6 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
 
-// console.log(process.env.DB_USER);
-
-// console.log("DB_USER in db.js:", process.env.DB_USER ? "✅ Yes" : "❌ No");
-// console.log("DB_USER Loaded:", process.env.DB_USER ? "✅ Yes" : "❌ No");
 const db = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,

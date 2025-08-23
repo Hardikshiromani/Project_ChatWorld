@@ -29,10 +29,19 @@ const User = db.define("user", {
     type:DataTypes.STRING(20),
     allowNull: true,
    },
+   profilePhoto:{
+    type: DataTypes.STRING(1000),
+    allowNull: true,
+    // field: 'profilepic', // Match column name in DB
+   },
    lastseen: {
     type: DataTypes.DATE,       // Sequelize's format
     field: 'lastseen',          // Match column name in DB
     allowNull: true,
+  },
+  fcmtoken:{
+    type:DataTypes.STRING(255),
+    allowNull:true
   }
    },  {
     tableName: "user",

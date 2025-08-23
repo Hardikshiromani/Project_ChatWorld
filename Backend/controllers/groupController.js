@@ -1,17 +1,17 @@
-const { User, Message, Chatroom, ChatMembers } = require("../models"); // Fixed model names
-const { Op } = require("sequelize");
+const { User, Message, Chatroom, ChatMembers } = require("../models"); // Import models
+const { Op } = require("sequelize"); // Import Sequelize operators for querying
 
+// **Create a New Group Chat**
 exports.createGroup = async (req, res) => {
   try {
-    const { roomName, createdBy, description, members } = req.body;
+    const { roomName, createdBy, description, members } = req.body; // Extract data from request body
 
+    // Validate required fields
     if (!roomName || !createdBy || members.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all required fields" });
+      return res.status(400).json({ message: "Please provide all required fields" });
     }
 
-    //createe the group
+    // Create the new group chat in the database
     const newGroup = await Chatroom.create({
       roomName,
       createdBy,
@@ -19,28 +19,30 @@ exports.createGroup = async (req, res) => {
       description,
     });
 
+    // Add the creator as an admin
     await ChatMembers.create({
       roomId: newGroup.roomId,
       userId: createdBy,
       role: "admin",
     });
 
+    // Filter members to exclude the creator
     const filteredMembers = members.filter((userId) => userId !== createdBy);
 
-    // ✅ Add Admin and Members
+    // Prepare bulk insertion for group members
     const memberData = filteredMembers.map((userId) => ({
-        roomId: newGroup.roomId,
+      roomId: newGroup.roomId,
       userId,
       role: "member",
     }));
-    //   ];
 
+    // Bulk insert members if available
     if (memberData.length > 0) {
       await ChatMembers.bulkCreate(memberData);
     }
 
     res.status(201).json({
-      message: "group created Sucessfully",
+      message: "Group created successfully",
       group: newGroup,
       members: [createdBy, ...members],
     });
@@ -50,17 +52,21 @@ exports.createGroup = async (req, res) => {
   }
 };
 
+// **Update Group Details**
 exports.updateGroup = async (req, res) => {
   try {
-    const { roomId } = req.params;
-    const { roomName, description } = req.body;
+    const { roomId } = req.params; // Extract room ID from request parameters
+    const { roomName, description } = req.body; // Extract updated details
 
+    // Find the group in the database
     const group = await Chatroom.findByPk(roomId);
-
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
+
+    // Update group details
     await group.update({ roomName, description });
+
     res.status(200).json({ message: "Group updated successfully", group });
   } catch (error) {
     console.error("Error updating group:", error);
@@ -68,10 +74,12 @@ exports.updateGroup = async (req, res) => {
   }
 };
 
+// **Get Group Details**
 exports.getGroupdetails = async (req, res) => {
   try {
-    const { roomName } = req.params;
+    const { roomName } = req.params; // Extract group name from request parameters
 
+    // Find group details including the creator's information
     const group = await Chatroom.findOne({
       where: { roomName },
       include: [
@@ -82,6 +90,7 @@ exports.getGroupdetails = async (req, res) => {
         },
       ],
     });
+
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
@@ -93,28 +102,27 @@ exports.getGroupdetails = async (req, res) => {
   }
 };
 
-
+// **Delete a Group Chat**
 exports.deleteGroup = async (req, res) => {
   try {
-    const { roomId } = req.params;
-    
+    const { roomId } = req.params; // Extract room ID from request parameters
 
-    //find the Chatroom
+    // Find the chat room in the database
+    const chatroom = await Chatroom.findOne({ where: { roomId } });
 
-    const chatroom= await Chatroom.findOne({where: {roomId}});
+    if (!chatroom) {
+      return res.status(404).json({ message: "Chatroom not found" });
+    }
 
-    if(!chatroom) return res.status(404).json({message:"Chatroom not Found"});
+    // Delete group members first before removing the chatroom itself
+    await ChatMembers.destroy({ where: { userId: chatroom.createdBy } });
 
-  //delete group members first (since ChatMenbers has no roomId)
-  await  ChatMembers.destroy({where:{userId: chatroom.createdBy}});
+    // Now, delete the chatroom
+    await Chatroom.destroy({ where: { roomId } });
 
- // Now, delete the chatroom
- await Chatroom.destroy({ where: { roomId } });
-
- res.status(200).json({ message: "Chatroom and its members deleted successfully" });
-
+    res.status(200).json({ message: "Chatroom and its members deleted successfully" });
   } catch (error) {
-    console.error("error deleting chatroom", error);
-    return res.status(500).json({ error: "Internal server Error " });
+    console.error("Error deleting chatroom:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

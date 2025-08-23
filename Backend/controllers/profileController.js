@@ -1,127 +1,177 @@
-const Users = require("../models/userModel");
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-require("dotenv").config();
+const { profile } = require("console"); // Import console profile (not used here)
+const Users = require("../models/userModel"); // Import user model
+const multer = require("multer"); // Import Multer for handling file uploads
+const path = require("path"); // Import path module for file operations
+const fs = require("fs");
+require("dotenv").config(); // Load environment variables from .env file
+// const {upload}= require("../controllers/uploadController")
+const { v2: cloudinary } = require("cloudinary");
 
+// **Profile Photo Upload Configuration**
+const dpStorage = multer.diskStorage({
+  destination: "./uploads/dp/", // Folder where profile pictures are stored
+  filename: (req, file, cb) => {
+    cb(null, `dp-${Date.now()}-${file.originalname}`); // Generate unique filename
+  },
+});
+const uploadPic= multer({ storage: dpStorage }); // Configure Multer for profile photo uploads
+
+// **Create New User**
 const createUser = async (req, res) => {
-  // try {
-  //   const { username, password, bio, DOB } = req.body;
-
-  //     // const phone= phoneNumber||null;
-  //   // if user exists already
-  //   const existingUser = await Users.findOne({ where: { username } });
-
-  //   if (existingUser) {
-  //     return res.status(400).json({ message: "User already exists" });
-  //   }
-
-  //   const newUser = await Users.create({
-  //     username,
-  //     password,
-  //     bio,
-  //     DOB,
-  //     // phoneNumber:phone,
-  //   });
-
-  //   res
-  //     .status(201)
-  //     .json({ message: "User created successfully", data: newUser });
-  // }
   try {
-    // const { userid } = req.params; //get userId from URL params
-    const { username, password, bio, DOB, phoneNumber } = req.body;
+    const { username, password, bio, DOB } = req.body; // Extract user details from request body
+    let profilePhoto = null;
 
-    //find the user by userID
-
-    const user = await Users.findOne({where:{phoneNumber}});
-    // if (!user) {
-    //   return res.status(404).json({ message: "User not found" });
+    // Check if profile picture is uploaded
+    // if (req.file) {
+    //   profilePhoto = `/uploads/dp/${req.file.filename}`;
     // }
-    //update feilds if provivded in the request
 
-     user.username = username;
-    user.password = password;
-     user.bio = bio;
-     user.DOB = DOB;
-    // user.phoneNumber = phoneNumber;
+    if (req.file) {
+  const result = await cloudinary.uploader.upload(req.file.path, {
+    folder: "chatApp/dp",
+  });
+  fs.unlinkSync(req.file.path); // delete local temp file
+  profilePhoto = result.secure_url;
+}
 
-    //save the updated user
-    await user.save();
-    res.status(200).json({ message: "User Created Successfully", data: user });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    // Create new user with provided details
+    const newUser = await Users.create({
+      username,
+      password,
+      bio,
+      DOB,
+      // phoneNumber,
+      profilePhoto,
+    });
+
+    await newUser.save(); // Save user data to database
+    res.status(200).json({ message: "User Created Successfully", data: newUser });
+  } 
+  // catch (error) {
+  //   res.status(500).json({ message: "Internal server error", error: error.message });
+  // }
+   catch (error) {
+  console.error("User creation failed:", error); // Full error object
+  if (error.name === "SequelizeValidationError") {
+    return res.status(400).json({
+      message: "Validation failed",
+      errors: error.errors.map((e) => ({
+        field: e.path,
+        message: e.message,
+      })),
+    });
   }
+  res.status(500).json({ message: "Internal server error", error: error.message });
+}
+
 };
 
+// **Update Existing User Profile**
 const updateUser = async (req, res) => {
   try {
-    const { userid } = req.params; //get userId from URL params
-    const { username, password, bio, DOB, phoneNumber } = req.body;
+    const { userid } = req.params; // Get user ID from URL parameters
+    const { username, password, bio, DOB, phoneNumber } = req.body; // Extract user details from request body
 
-    //find the user by userID
-
+    // Find user by ID
     const user = await Users.findByPk(userid);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    //update feilds if provivded in the request
 
+    // Update user fields if provided in request
     if (username) user.username = username;
     if (password) user.password = password;
     if (bio) user.bio = bio;
     if (DOB) user.DOB = DOB;
     if (phoneNumber) user.phoneNumber = phoneNumber;
+    // if (req.file) {
+    //   user.profilePhoto = `/uploads/dp/${req.file.filename}`; // Update profile photo path
+    // }
 
-    //save the updated user
-    await user.save();
+       if (req.file) {
+  const result = await cloudinary.uploader.upload(req.file.path, {
+    folder: "chatApp/dp",
+  });
+  fs.unlinkSync(req.file.path); // delete local temp file
+  profilePhoto = result.secure_url;
+}
+    await user.save(); // Save updated user data
     res.status(200).json({ message: "User updated successfully", data: user });
   } catch (err) {
     res.status(500).json({ message: "Internal server error", error: err });
   }
 };
 
+// **Delete User**
 const deleteUser = async (req, res) => {
   try {
-    const { userid } = req.params;
-    // console.log('requested id',id);
-    const user = await Users.findOne({ where: { userid: userid } });
-    //check if the user exists
+    const { userid } = req.params; // Get user ID from URL parameters
+
+    // Find user by ID
+    const user = await Users.findOne({ where: { userid } });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    //delete the user
-    await user.destroy();
+    await user.destroy(); // Delete user from database
     res.status(200).json({ message: "User deleted successfully" });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: err.message });
+    res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+// **Search for a User**
+const searchUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // Get user ID from URL parameters
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    // Find user by ID
+    const user = await Users.findAll({ where: { userid: userId } });
+    if (!user || user.length === 0) {
+      return res.status(404).json({ message: "User not found. Please try again." });
+    }
+
+    res.status(200).json({ data: user });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
 
 
-const searchUser= async(req,res)=>{
+const searchByUsername=async (req,res)=>{
+    try{
+      const {username} = req.query;
 
-  try{
-  const {UserName}= req.query;
+      
+    if (!username) {
+      return res.status(400).json({ message: "Username is required" });
+    }
 
+    // Find all users whose username contains the search term (case-insensitive)
+       const user = await Users.findAll({
+      where: {
+        username: {
+          [require("sequelize").Op.like]: `%${username}%`,
+        },
+      },
+    });
 
-  if (!UserName) {
-    return res.status(400).json({ message: 'Username is required' });
-}
-  const user= await Users.findAll({where:{username:UserName}});
-  if(!user){
-    return res.status(404).json({message:'User not Found Search Again'});
+      if(!user || user.length===0){
+        return res.status(404).json({message:"User not found"});
+    }
+     
+   res.status(200).json({ data: user });
+    }
+   catch (error) {
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
-  res.status(200).json({data:user});
-  }
-  catch(error){
-    res.status(500).json({ message: 'Internal server error', error: error.message });
-  }
-}
 
+};
 
-module.exports = { createUser, updateUser, deleteUser,searchUser };
+// Export functions for use in other parts of the application
+module.exports = { createUser, uploadPic,updateUser, searchByUsername,deleteUser, searchUser};

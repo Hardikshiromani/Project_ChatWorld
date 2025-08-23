@@ -1,77 +1,4 @@
-// controllers/chatController.js
 
-// const getChatlist = async (req, res) => {
-//     const userId = req.user.id; // Get from JWT/session
-  
-//     try {
-//       const chatlist = await ChatMembers.findAll({
-//         where: { userId },
-//         attributes: ['roomId', 'lastReadMessageId', 'isPinned', 'lastSeenAt'],
-//         include: [
-//           {
-//             model: ChatRoom,
-//             attributes: ['roomName', 'chatType'],
-//             include: [
-//               {
-//                 model: Message,
-//                 limit: 1,
-//                 order: [['sentAt', 'DESC']],
-//                 attributes: ['messageId', 'content', 'sentAt', 'senderId'],
-//               }
-//             ]
-//           }
-//         ],
-//         order: [['isPinned', 'DESC']],
-//       });
-  
-//       res.json(chatlist);
-  
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: 'Failed to fetch chatlist' });
-//     }
-//   };
-  
-//   module.exports = { getChatlist };
-  
-// const { ChatMembers, ChatRoom, Message } = require('../models');
-// const { Message, Chatroom, ChatMemberss } = require("../models");
-
-// const getChatlist = async (req, res) => {
-//   const userId = req.query.userId; // Pass userId as query param
-
-//   if (!userId) {
-//     return res.status(400).json({ error: 'userId is required' });
-//   }
-
-//   try {
-//     const chatlist = await ChatMemberss.findAll({
-//       where: { userId },
-//       attributes: ['roomId', 'lastReadMessageId', 'isPinned', 'lastSeenAt'],
-//       include: [
-//         {
-//           model: Chatroom,
-//           attributes: ['roomName', 'chatType'],
-//           include: [
-//             {
-//               model: Message,
-//               limit: 1,
-//               order: [['sentAt', 'DESC']],
-//               attributes: ['messageId', 'content', 'sentAt', 'senderId'],
-//             }
-//           ]
-//         }
-//       ],
-//       order: [['isPinned', 'DESC']],
-//     });
-
-//     res.json(chatlist);
-//   } catch (err) {
-//     console.error('Chatlist Error:', err);
-//     res.status(500).json({ error: 'Something went wrong' });
-//   }
-// };
-// const { ChatMembers, ChatRoom, Message } = require('../models');
 const { User, Message, Chatroom, ChatMembers } = require('../models');
 
 
@@ -211,12 +138,14 @@ const privateMessages = async (req, res) => {
         {
           model: User,
           as: 'sender',
-          attributes: ['userId', 'username']
+          attributes: ['userId', 'username'],
+        
         },
         {
           model: User,
           as: 'receiver',
-          attributes: ['userId', 'username']
+          attributes: ['userId', 'username'],
+       // Ensure receiver is included
         }
       ]
     });

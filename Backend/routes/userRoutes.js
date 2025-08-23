@@ -1,16 +1,41 @@
 const express = require("express");
 const router = express.Router();
-const { login } = require("../controllers/authController"); // Import controllers
-const {sendOTP,verifyOTP} = require("../controllers/OtpController2");
-const {createUser,updateUser,deleteUser,searchUser} = require('../controllers/profileController');
+const { login } = require("../controllers/authController"); // Import authentication controller
+const { sendOTP, verifyOTP } = require("../controllers/OtpController2"); // Import OTP controllers
+const { createUser, updateUser, deleteUser, searchUser, searchByUsername, uploadPic } = require("../controllers/profileController"); // Import profile controllers
+const multer = require("multer");
+// **User Management Routes**
 
+// Search user by ID
+router.get("/search/:userId", searchUser);
 
-
-router.get("/search", searchUser);
+// Delete user account
 router.delete("/deleteuser/:userid", deleteUser);
-router.put("/updateuser/:userid", updateUser);
-router.post("/signup", createUser);
+
+// Update user profile (Includes profile photo upload)
+// router.put("/updateuser/:userid",updateUser);
+router.put("/update/:userid", uploadPic.single("profilePhoto"), updateUser);
+
+
+// **Authentication Routes**
+
+// User signup (Includes profile photo upload)
+// router.post("/signup", createUser);
+router.post("/create", uploadPic.single("profilePhoto"), createUser);
+
+
+// User login
 router.post("/login", login);
-router.post('/sendOTP',sendOTP);
-router.post('/verifyOTP',verifyOTP);
+
+// **OTP Management Routes**
+
+// Send OTP for verification
+router.post("/sendOTP", sendOTP);
+
+// Verify OTP
+router.post("/verifyOTP", verifyOTP);
+
+
+router.get("/Users",searchByUsername);
+// Export router configuration
 module.exports = router;
