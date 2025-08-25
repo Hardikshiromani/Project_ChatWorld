@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const login = async (req, res) => {
     try {
-        console.log("Request Body:", req.body); // Debugging log
+        // console.log("Request Body:", req.body); // Debugging log
 
         // Ensure request body is not empty
         if (!req.body || !req.body.username || !req.body.password) {

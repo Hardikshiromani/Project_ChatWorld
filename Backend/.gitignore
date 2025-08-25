@@ -6,6 +6,11 @@ package-lock.json
 .env  
 firebaseConfig.js  
 serviceAccountKey.json  
+service_Key.json
+db.js
+
+models/index.js
+config/multerConfig.js
 
 # ⚙️ Build & Cache files  
 dist/  
@@ -21,7 +26,6 @@ pm2.log
 
 # 🖼️ User uploads (If storing media files)  
 uploads/  
-
 # ⚡ Database files (if any)  
 config/db.js
 # config/db.sqlite-journal  

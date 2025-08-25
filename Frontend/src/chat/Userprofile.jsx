@@ -4,12 +4,12 @@ import { FaArrowLeft } from "react-icons/fa"; // Importing back arrow icon
 
 // UserProfile component displays user details based on the selected chat
 const UserProfile = ({ selectedChat, profile, onClose }) => {
-  console.log("Rendering profile:", profile); // Logging profile data for debugging
+  // console.log("Rendering profile:", profile); // Logging profile data for debugging
 
   // Display a loading message if profile data is not available
   if (!profile) return <div>Loading...</div>;
 
-  console.log("UserProfile selectedChat:", profile.data[0].username);
+  // console.log("UserProfile selectedChat:", profile.data[0].username);
 
   // Display a styled loading placeholder if profile is still being fetched
   if (!profile) {

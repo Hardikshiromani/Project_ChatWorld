@@ -57,7 +57,7 @@ const ChatPage = () => {
         try {
           const res = await axios.get(`http://localhost:5000/api/user/search/${otherUserId}`);
           setSelectedUserProfile(res.data);
-          console.log("Selected chat:", res.data[0]);
+          // console.log("Selected chat:", res.data[0]);
         } catch (error) {
           console.error("Failed to fetch selected user profile:", error);
           setSelectedUserProfile(null);

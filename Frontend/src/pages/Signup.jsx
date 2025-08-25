@@ -19,10 +19,10 @@ const Signup = () => {
         {
           size: "invisible",
           callback: (response) => {
-            console.log("reCAPTCHA verified", response);
+            // console.log("reCAPTCHA verified", response);
           },
           "expired-callback": () => {
-            console.log("reCAPTCHA expired");
+            // console.log("reCAPTCHA expired");
             alert("reCAPTCHA expired. Please try again.");
           },
         }
@@ -60,7 +60,7 @@ const Signup = () => {
 
       // ✅ Get Firebase ID Token
       const token = await user.getIdToken();
-      console.log("✅ Firebase ID Token:", token);
+      // console.log("✅ Firebase ID Token:", token);
 
       // ✅ Send token to backend
       const response = await axios.post("http://localhost:5000/api/user/verifyOTP", {

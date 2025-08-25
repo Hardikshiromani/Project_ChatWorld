@@ -28,7 +28,7 @@ const LoginForm = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      console.log(response.data); // Debug: log response
+      // console.log(response.data); // Debug: log response
 
       // Navigate to chat page on successful login
       navigate("/chatpage");

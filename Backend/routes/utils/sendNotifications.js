@@ -41,10 +41,10 @@ const sendPushNotification = async (targetToken, title, body) => {
       },
     };
 
-    console.log("📩 Sending Notification:", message);
+    // console.log("📩 Sending Notification:", message);
 
     const response = await admin.messaging().send(message);
-    console.log("✅ FCM Response:", response);
+    // console.log("✅ FCM Response:", response);
     return response;
   } catch (error) {
     console.error("❌ Error sending notification:", error);

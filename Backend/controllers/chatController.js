@@ -12,7 +12,7 @@ exports.intialiseSocket = (socketio) => {
   io = socketio;
 
   io.on("connection", (socket) => {
-    console.log("User Connected:", socket.id);
+    // console.log("User Connected:", socket.id);
 
     // **Handle User Joining Room**
     socket.on("joinRoom", async (data) => {
@@ -21,18 +21,18 @@ exports.intialiseSocket = (socketio) => {
       // Store user as online
       if (userId) {
         onlineUsers.set(userId.toString(), socket.id);
-        console.log("✅ Added user to onlineUsers:", onlineUsers);
+        // console.log("✅ Added user to onlineUsers:", onlineUsers);
       }
 
       // Join group or private chat room
       if (userId && roomId) {
         socket.join(roomId.toString());
-        console.log(`👤 User ${userId} joined room ${roomId}`);
-        console.log(`🔹 Rooms for User ${userId}:`, socket.rooms);
+        // console.log(`👤 User ${userId} joined room ${roomId}`);
+        // console.log(`🔹 Rooms for User ${userId}:`, socket.rooms);
       } else if (userId) {
         socket.join(userId.toString());
-        console.log(`✅ User ${userId} joined`);
-        console.log(`🔹 Rooms for User ${userId}:`, socket.rooms);
+        // console.log(`✅ User ${userId} joined`);
+        // console.log(`🔹 Rooms for User ${userId}:`, socket.rooms);
       } else {
         console.error("❌ User ID or Room ID missing in joinRoom event");
       }
@@ -43,7 +43,7 @@ exports.intialiseSocket = (socketio) => {
           { lastseen: new Date() },
           { where: { userid: userId } }
         );
-        console.log(`✅ Last seen updated for User ${userId}`);
+        // console.log(`✅ Last seen updated for User ${userId}`);
       } catch (error) {
         console.error("❌ Error updating last seen:", error);
       }
@@ -51,7 +51,7 @@ exports.intialiseSocket = (socketio) => {
 
     // **Error Handling**
     socket.on("errorMessage", (data) => {
-      console.log("Error Message:", data);
+      // console.log("Error Message:", data);
       socket.emit("errorMessage", data);
     });
 
@@ -93,18 +93,18 @@ exports.intialiseSocket = (socketio) => {
 
           // Restrict non-admins from sending messages in admin-only groups
           if (chatRoom.chatType === "group" && chatRoom.createdBy !== senderId) {
-            console.log(`User ${senderId} is not the admin of group ${roomId}`);
+            // console.log(`User ${senderId} is not the admin of group ${roomId}`);
             socket.emit("errorMessage", {
               message: "Only admins can send messages in this group",
             });
             return;
           }
 
-          console.log(`📤 Message sent to Room ID: ${roomId}`);
+          // console.log(`📤 Message sent to Room ID: ${roomId}`);
           io.to(roomId.toString()).emit("receiveMessage", newMessage);
         } else if (receiverId) {
           io.to(receiverId.toString()).emit("receiveMessage", newMessage);
-          console.log(`📤 Sending message to Receiver ID: ${receiverId}`);
+          // console.log(`📤 Sending message to Receiver ID: ${receiverId}`);
         }
       } catch (error) {
         console.error("Error saving message:", error);
@@ -128,11 +128,11 @@ exports.intialiseSocket = (socketio) => {
       for (const [userId, socketId] of onlineUsers.entries()) {
         if (socketId === socket.id) {
           onlineUsers.delete(userId);
-          console.log(`🚪 User ${userId} went offline`);
+          // console.log(`🚪 User ${userId} went offline`);
           break;
         }
       }
-      console.log("User Disconnected:", socket.id);
+      // console.log("User Disconnected:", socket.id);
     });
   });
 };
@@ -275,7 +275,7 @@ exports.getMessage = async (req, res) => {
 exports.getUnreadMessages = async (req, res) => {
   const { userId } = req.params;
 
-  console.log("Requested userId:", userId);
+  // console.log("Requested userId:", userId);
 
   try {
     // **Find group room IDs where user is a member**
