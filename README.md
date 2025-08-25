@@ -23,4 +23,7 @@ Database: MySQL
 
 Real-time Communication: Socket.IO
 
+# ER Diagram
+<img width="1291" height="1431" alt="Chat_database drawio" src="https://github.com/user-attachments/assets/24b8b1ea-89fa-47e7-8ac3-a85f612b39d2" />
+
 
