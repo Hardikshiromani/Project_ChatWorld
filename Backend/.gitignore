@@ -6,7 +6,7 @@ package-lock.json
 .env  
 firebaseConfig.js  
 serviceAccountKey.json  
-service_Key.json
+serviceKey.json
 db.js
 
 models/index.js

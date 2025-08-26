@@ -4,9 +4,9 @@ const fs = require("fs");
 
 
   cloudinary.config({ 
-        cloud_name: 'dql78wbvp', 
-        api_key: '765671396547619', 
-        api_secret: 't1aiv-mBCSy6ChLOggQLRz8irFQ' // Click 'View API Keys' above to copy your API secret
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+        api_key: process.env.CLOUDINARY_API_KEY, 
+        api_secret: process.env.CLOUDINARY_API_SECRET// Click 'View API Keys' above to copy your API secret
     });
     
 const uploadMedia = async (req, res) => {
