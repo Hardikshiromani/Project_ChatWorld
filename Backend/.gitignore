@@ -4,7 +4,7 @@ package-lock.json
 
 # 🔑 Environment variables & Secrets  
 .env  
-firebaseConfig.js  
+# firebaseConfig.js  
 serviceAccountKey.json  
 serviceKey.json
 # db.js
