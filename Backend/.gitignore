@@ -9,7 +9,7 @@ serviceAccountKey.json
 serviceKey.json
 db.js
 
-models/index.js
+# models/index.js
 config/multerConfig.js
 
 # ⚙️ Build & Cache files  
