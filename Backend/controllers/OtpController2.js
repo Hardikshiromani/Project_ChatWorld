@@ -1,4 +1,4 @@
-const admin = require("../firebaseconfig"); // Import Firebase configuration
+const admin = require("../firebaseConfig"); // Import Firebase configuration
 const { User } = require("../models"); // Import User model (adjust path if needed)
 
 // **Send OTP to User's Phone Number**
