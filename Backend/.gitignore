@@ -7,7 +7,7 @@ package-lock.json
 firebaseConfig.js  
 serviceAccountKey.json  
 serviceKey.json
-db.js
+# db.js
 
 # models/index.js
 config/multerConfig.js
