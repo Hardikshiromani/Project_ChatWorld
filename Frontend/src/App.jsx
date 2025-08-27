@@ -1,6 +1,6 @@
 // require("dotenv").config();
 import React, { useEffect } from "react";
-import Loginform from "./Pages/Loginform"; // Import Login form component
+import LoginForm from "./Pages/LoginForm"; // Import Login form component
 import { Routes, Route } from "react-router-dom"; // Import routing functionalities
 import Signup from "./Pages/Signup"; // Import Signup page component
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap for styling
@@ -46,7 +46,7 @@ function App() {
     <>
       {/* Define application routes */}
       <Routes>
-        <Route path="/" element={<Loginform />} /> {/* Default login route */}
+        <Route path="/" element={<LoginForm />} /> {/* Default login route */}
         <Route path="/signup" element={<Signup />} /> {/* Signup page route */}
         <Route path="/Profilepage" element={<Profilepage />} /> {/* Profile page route */}
         <Route path="/ChatPage" element={<ChatPage />} /> {/* Chat page route */}
