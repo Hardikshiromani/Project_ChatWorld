@@ -13,7 +13,7 @@ const db = new Sequelize(
   // Database Password
   {
     host: process.env.DB_HOST, // Corrected host
-    port: 3306, // Added port
+    port: 20469, // Added port
     dialect: "mysql",
     logging: false,
   }
