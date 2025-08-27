@@ -6,7 +6,7 @@ import axios from "axios"; // For making backend API calls
 const BackURL=import.meta.env.VITE_API_URL;
 
 
-const LoginForm = () => {
+const Login = () => {
   // State variables for form fields and UI logic
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
   const [username, setUsername] = useState(""); // Username input
@@ -115,4 +115,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;
