@@ -1,10 +1,10 @@
 // require("dotenv").config();
 import React, { useEffect } from "react";
-import Login from "./Pages/Login"; // Import Login form component
+import Login from "./Pages/Login.jsx"; // Import Login form component
 import { Routes, Route } from "react-router-dom"; // Import routing functionalities
-import Signup from "./Pages/Signup"; // Import Signup page component
+import Signup from "./Pages/Signup.jsx"; // Import Signup page component
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap for styling
-import Profilepage from "./Pages/Profilepage"; // Import Profile page component
+import Profilepage from "./Pages/Profilepage.jsx"; // Import Profile page component
 import ChatPage from "./Pages/ChatPage"; // Import Chat page component
 import { requestFCMToken, listenToMessages } from "./firebasenotification"; // Import Firebase notification functions
 
