@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from "react";
-import SideBar from "../chat/SideBar"; // Sidebar component for navigation
-import ChatList from "../chat/chatList"; // Component to display list of chats
-import ChatRoom from "../chat/ChatRoom"; // Chat room component for active chat
-import UserProfile from "../chat/UserProfile"; // Displays user profile
-import Status from "../pages/Status"; // Status page component
-import Contacts from "../pages/Contacts"; // Contacts page component
-import Settings from "../pages/Settings"; // Settings page component
+import SideBar from "../Chat/SideBar"; // Sidebar component for navigation
+import ChatList from "../Chat/chatList"; // Component to display list of chats
+import ChatRoom from "../Chat/ChatRoom"; // Chat room component for active chat
+import UserProfile from "../Chat/UserProfile"; // Displays user profile
+import Status from "./Status"; // Status page component
+import Contacts from "./Contacts"; // Contacts page component
+import Settings from "./Settings"; // Settings page component
 import LoginForm from "./Loginform"; // Login form component
 import axios from "axios"; // Axios for API calls
 import socket from "../socket"; // Import socket instance for real-time communication
