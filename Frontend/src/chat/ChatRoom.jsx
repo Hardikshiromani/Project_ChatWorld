@@ -7,6 +7,7 @@ import { AiOutlineUser } from "react-icons/ai"; // Import user profile icon
 import ChatInput from "./chatInput"; // Import chat input component
 import socket from "../socket"; // Import WebSocket instance
 import pic1 from "../assets/pic1.png"; // Default profile picture
+const BackURL=import.meta.env.VITE_API_URL;
 
 // ChatRoom component for handling individual/group chat sessions
 const ChatRoom = ({ selectedChat, chats, setShowProfile,handleNewChat }) => {
@@ -96,7 +97,7 @@ const receiverId = getReceiverId(selectedChat, loggedInUserId);
 
     // console.log("payload",messagePayload);
     try {
-      const res = await fetch("http://localhost:5000/api/chat/sendmessage", {
+      const res = await fetch(`${BackURL}/api/chat/sendmessage`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { auth, RecaptchaVerifier, signInWithPhoneNumber } from "../firebase";
 import axios from "axios";
 
+
+const BackURL=import.meta.env.VITE_API_URL;
+
+
 const Signup = () => {
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
@@ -63,7 +67,7 @@ const Signup = () => {
       // console.log("✅ Firebase ID Token:", token);
 
       // ✅ Send token to backend
-      const response = await axios.post("http://localhost:5000/api/user/verifyOTP", {
+      const response = await axios.post(`${BackURL}/api/user/verifyOTP`, {
         tokenId: token,
       });
 

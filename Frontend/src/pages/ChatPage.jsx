@@ -10,6 +10,10 @@ import Settings from "../pages/Settings"; // Settings page component
 import LoginForm from "./Loginform"; // Login form component
 import axios from "axios"; // Axios for API calls
 import socket from "../socket"; // Import socket instance for real-time communication
+// require("dotenv").config();
+
+const BackURL=import.meta.env.VITE_API_URL;
+
 
 const ChatPage = () => {
   // State variables for chat management
@@ -37,7 +41,7 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/chat/getUnreadMessages/${userId}`);
+        const res = await axios.get(`${BackURL}/api/chat/getUnreadMessages/${userId}`);
         setChats(res.data.messages);
       } catch (err) {
         console.error("Failed to fetch chat list:", err);
@@ -55,7 +59,7 @@ const ChatPage = () => {
          const otherUserId = selectedChat.receiverId
     
         try {
-          const res = await axios.get(`http://localhost:5000/api/user/search/${otherUserId}`);
+          const res = await axios.get(`${BackURL}/api/user/search/${otherUserId}`);
           setSelectedUserProfile(res.data);
           // console.log("Selected chat:", res.data[0]);
         } catch (error) {

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import {Link, useNavigate } from "react-router-dom";
 import axios from "axios"; // For making backend API calls
+// require("dotenv").config();
+
+const BackURL=import.meta.env.VITE_API_URL;
+
 
 const LoginForm = () => {
   // State variables for form fields and UI logic
@@ -16,7 +20,7 @@ const LoginForm = () => {
     e.preventDefault(); // Prevent default form submission (page reload)
     try {
       // Send login request to backend
-      const response = await axios.post("http://localhost:5000/api/user/login", {
+      const response = await axios.post(`${BackURL}/api/user/login`, {
         username,
         password,
       });

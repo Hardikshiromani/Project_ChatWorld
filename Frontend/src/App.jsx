@@ -1,4 +1,4 @@
-
+// require("dotenv").config();
 import React, { useEffect } from "react";
 import Loginform from "./pages/Loginform"; // Import Login form component
 import { Routes, Route } from "react-router-dom"; // Import routing functionalities
@@ -7,6 +7,10 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap for styling
 import Profilepage from "./pages/Profilepage"; // Import Profile page component
 import ChatPage from "./pages/ChatPage"; // Import Chat page component
 import { requestFCMToken, listenToMessages } from "./firebasenotification"; // Import Firebase notification functions
+
+
+// const BackURL=process.env.API.URL;
+const BackURL=import.meta.env.VITE_API_URL;
 
 // Retrieve user details from local storage
 const user = JSON.parse(localStorage.getItem("user"));
@@ -21,7 +25,7 @@ function App() {
 
       // If token is retrieved, send it to backend API
       if (token) {
-        await fetch("http://localhost:5000/api/save-fcm-token", {
+        await fetch(`${BackURL}/api/save-fcm-token`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

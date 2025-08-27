@@ -11,6 +11,12 @@ const ChatList = ({ chats, onSelectChat }) => {
   const [results, setResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
    const [query, setQuery]= useState("");
+// require("dotenv").config();
+
+
+// const BackURL=process.env.API.URL;
+const BackURL=import.meta.env.VITE_API_URL;
+
   // Retrieve user details from local storage
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id;
@@ -21,7 +27,7 @@ const ChatList = ({ chats, onSelectChat }) => {
     if (!searchTerm) return;
 
     const delayDebounce = setTimeout(() => {
-      axios.get(`http://localhost:5000/api/user/Users?username=${searchTerm}`)
+      axios.get(`${BackURL}/api/user/Users?username=${searchTerm}`)
         .then(res => setResults(res.data.data))
         .catch(err => console.log(err));
     }, 300); // debounce for 300ms
@@ -88,16 +94,16 @@ const ChatList = ({ chats, onSelectChat }) => {
   const getProfilePhoto = (chat) => {
     if (chat.receiverId === null) {
       return chat.chatroom?.profilePhoto
-        ? `http://localhost:5000${chat.chatroom.profilePhoto}`
+        ? `${BackURL}${chat.chatroom.profilePhoto}`
         : pic1;
     }
 
     return chat.senderId !== userId
       ? chat.sender?.profilePhoto
-        ? `http://localhost:5000${chat.sender.profilePhoto}`
+        ? `${BackURL}${chat.sender.profilePhoto}`
         : pic1
       : chat.receiver?.profilePhoto
-      ? `http://localhost:5000${chat.receiver.profilePhoto}`
+      ? `${BackURL}${chat.receiver.profilePhoto}`
       : pic1;
   };
 useEffect(() => {
