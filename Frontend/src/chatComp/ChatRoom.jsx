@@ -6,7 +6,7 @@ import { BsThreeDotsVertical } from "react-icons/bs"; // Import settings menu ic
 import { AiOutlineUser } from "react-icons/ai"; // Import user profile icon
 import ChatInput from "./ChatInput"; // Import chat input component
 import socket from "../socket.js"   // Import WebSocket instance
-import pic1 from "./assets/pic1.png"; // Default profile picture
+import pic1 from "../assets/pic1.png"; // Default profile picture
 const BackURL=import.meta.env.VITE_API_URL;
 
 // ChatRoom component for handling individual/group chat sessions
