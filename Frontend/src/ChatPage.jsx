@@ -11,14 +11,14 @@
 // import axios from "axios"; // Axios for API calls
 // import socket from "../socket"; // Import socket instance for real-time communication
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Chat/SIDEBAR";       // ✅ matches folder + file
-import ChatList from "./Chat/ChatList";     // ✅ lowercase "c" matches file
-import ChatRoom from "./Chat/ChatRoom";     // ✅ exact match
-import UserProfile from "./Chat/Userprofile"; // ✅ "Userprofile" matches file
+import Sidebar from "./Chat/SideBar.jsx";       // ✅ matches folder + file
+import ChatList from "./Chat/ChatList.jsx";     // ✅ lowercase "c" matches file
+import ChatRoom from "./Chat/ChatRoom.jsx";     // ✅ exact match
+import UserProfile from "./Chat/Userprofile.jsx"; // ✅ "Userprofile" matches file
 import Status from "./Status";
 import Contacts from "./Contacts";
 import Settings from "./Settings";
-import Login from "./Login";
+import Login from "./Login.jsx";
 import axios from "axios";
 import socket from "../socket";
 // require("dotenv").config();
