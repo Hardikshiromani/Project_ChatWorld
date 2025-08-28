@@ -11,12 +11,12 @@
 // import axios from "axios"; // Axios for API calls
 // import socket from "../socket"; // Import socket instance for real-time communication
 import React, { useState, useEffect } from "react";
+import ChatList from "./chat/ChatList"     // ✅ lowercase "c" matches file
 
 import Sidebar from "./chat/SideBar";       // ✅ matches folder + file
 import ChatRoom from "./chat/ChatRoom";     // ✅ exact match
 // import  UserProfile from "./chat/UserProfile.jsx";
  import UserProfile from "./UserProfile.jsx"; // Displays user profile
-import ChatList from "./chat/ChatList"     // ✅ lowercase "c" matches file
 import Status from "./Status";
 import Contacts from "./Contacts";
 import Settings from "./Settings";
