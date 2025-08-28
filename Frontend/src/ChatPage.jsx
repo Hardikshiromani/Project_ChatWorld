@@ -15,15 +15,14 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./chat/SideBar";       // ✅ matches folder + file
 import ChatRoom from "./chat/ChatRoom";     // ✅ exact match
 // import  UserProfile from "./chat/UserProfile.jsx";
- import UserProfile from "../chat/UserProfile"; // Displays user profile
+ import UserProfile from "./chat/UserProfile"; // Displays user profile
 import ChatList from "./chat/ChatList"     // ✅ lowercase "c" matches file
-
 import Status from "./Status";
 import Contacts from "./Contacts";
 import Settings from "./Settings";
 import Login from "./Login.jsx";
 import axios from "axios";
-import socket from "../socket";
+import socket from "./socket";
 // require("dotenv").config();
 
 const BackURL=import.meta.env.VITE_API_URL;
