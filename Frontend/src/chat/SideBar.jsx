@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Importing Bootstrap styles
 import "../css/SideBar.css"; // Importing custom styles for sidebar
 
 // Sidebar component for navigation
-const SideBar = ({ setSelectedTab, isSidebarVisible, setIsSidebarVisible }) => {
+const Sidebar = ({ setSelectedTab, isSidebarVisible, setIsSidebarVisible }) => {
 
   // Function to toggle sidebar visibility
   const toggleSidebar = () => {
@@ -73,4 +73,4 @@ const SideBar = ({ setSelectedTab, isSidebarVisible, setIsSidebarVisible }) => {
   );
 };
 
-export default SideBar;
+export default Sidebar;
