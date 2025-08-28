@@ -12,7 +12,7 @@
 // import socket from "../socket"; // Import socket instance for real-time communication
 import React, { useState, useEffect } from "react";
 import Sidebar from "./chat/SideBar";       // ✅ matches folder + file
-import ChatList from "../chat/ChatList";     // ✅ lowercase "c" matches file
+import ChatList from "./chat/ChatList.jsx"     // ✅ lowercase "c" matches file
 import ChatRoom from "./chat/ChatRoom";     // ✅ exact match
 // import  UserProfile from "./chat/UserProfile.jsx";
  import UserProfile from "../chat/UserProfile"; // Displays user profile
