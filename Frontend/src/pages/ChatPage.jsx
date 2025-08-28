@@ -7,7 +7,7 @@ import UserProfile from "../Chat/UserProfile"; // Displays user profile
 import Status from "./Status"; // Status page component
 import Contacts from "./Contacts"; // Contacts page component
 import Settings from "./Settings"; // Settings page component
-import LoginForm from "./Login"; // Login form component
+import Login from "../Login"; // Login form component
 import axios from "axios"; // Axios for API calls
 import socket from "../socket"; // Import socket instance for real-time communication
 // require("dotenv").config();
