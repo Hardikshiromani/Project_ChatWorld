@@ -11,6 +11,8 @@
 // import axios from "axios"; // Axios for API calls
 // import socket from "../socket"; // Import socket instance for real-time communication
 import React, { useState, useEffect } from "react";
+import socket from "./Socket.js";
+
 import ChatList from "./ChatList.jsx";   // ✅ lowercase "c" matches file
 import Sidebar from "./chatComp/SideBar.jsx";       // ✅ matches folder + file
 import ChatRoom from "./chatComp/ChatRoom.jsx";     // ✅ exact match
@@ -21,7 +23,6 @@ import Contacts from "./Contacts";
 import Settings from "./Settings";
 import Login from "./Login.jsx";
 import axios from "axios";
-import socket from "./Socket.js";
 // require("dotenv").config();
 
 const BackURL=import.meta.env.VITE_API_URL;
