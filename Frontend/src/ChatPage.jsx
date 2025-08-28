@@ -1,15 +1,26 @@
 
+// import React, { useState, useEffect } from "react";
+// import SideBar from "../Chat/SideBar"; // Sidebar component for navigation
+// import ChatList from "../Chat/chatList"; // Component to display list of chats
+// import ChatRoom from "../Chat/ChatRoom"; // Chat room component for active chat
+// import UserProfile from "../Chat/UserProfile"; // Displays user profile
+// import Status from "./Status"; // Status page component
+// import Contacts from "./Contacts"; // Contacts page component
+// import Settings from "./Settings"; // Settings page component
+// import Login from "../Login"; // Login form component
+// import axios from "axios"; // Axios for API calls
+// import socket from "../socket"; // Import socket instance for real-time communication
 import React, { useState, useEffect } from "react";
-import SideBar from "../Chat/SideBar"; // Sidebar component for navigation
-import ChatList from "../Chat/chatList"; // Component to display list of chats
-import ChatRoom from "../Chat/ChatRoom"; // Chat room component for active chat
-import UserProfile from "../Chat/UserProfile"; // Displays user profile
-import Status from "./Status"; // Status page component
-import Contacts from "./Contacts"; // Contacts page component
-import Settings from "./Settings"; // Settings page component
-import Login from "../Login"; // Login form component
-import axios from "axios"; // Axios for API calls
-import socket from "../socket"; // Import socket instance for real-time communication
+import SideBar from "../Chat/SideBar";       // ✅ matches folder + file
+import ChatList from "../Chat/chatList";     // ✅ lowercase "c" matches file
+import ChatRoom from "../Chat/ChatRoom";     // ✅ exact match
+import UserProfile from "../Chat/Userprofile"; // ✅ "Userprofile" matches file
+import Status from "./Status";
+import Contacts from "./Contacts";
+import Settings from "./Settings";
+import Login from "./Login";
+import axios from "axios";
+import socket from "../socket";
 // require("dotenv").config();
 
 const BackURL=import.meta.env.VITE_API_URL;
