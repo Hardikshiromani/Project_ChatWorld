@@ -21,7 +21,7 @@ import Contacts from "./Contacts";
 import Settings from "./Settings";
 import Login from "./Login.jsx";
 import axios from "axios";
-import socket from "./Socket.js";
+import socket from "./Socket";
 // require("dotenv").config();
 
 const BackURL=import.meta.env.VITE_API_URL;
