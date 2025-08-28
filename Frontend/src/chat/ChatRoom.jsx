@@ -4,7 +4,7 @@ import { BsEmojiSmile } from "react-icons/bs"; // Import emoji icon
 import { FaVideo } from "react-icons/fa"; // Import video call icon
 import { BsThreeDotsVertical } from "react-icons/bs"; // Import settings menu icon
 import { AiOutlineUser } from "react-icons/ai"; // Import user profile icon
-import ChatInput from "./chatInput"; // Import chat input component
+import ChatInput from "./ChatInput"; // Import chat input component
 import socket from "../socket"; // Import WebSocket instance
 import pic1 from "../assets/pic1.png"; // Default profile picture
 const BackURL=import.meta.env.VITE_API_URL;
