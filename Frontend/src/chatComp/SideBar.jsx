@@ -5,7 +5,7 @@ import { IoSettingsOutline } from "react-icons/io5"; // Importing 'Settings' ico
 import { HiOutlineStatusOnline } from "react-icons/hi"; // Importing 'Status' icon
 import { GiHamburgerMenu } from "react-icons/gi"; // Importing 'Menu' icon
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importing Bootstrap styles
-import "../css/SideBar.css"; // Importing custom styles for sidebar
+// import "./css/SideBar.css"; // Importing custom styles for sidebar
 
 // Sidebar component for navigation
 const Sidebar = ({ setSelectedTab, isSidebarVisible, setIsSidebarVisible }) => {
