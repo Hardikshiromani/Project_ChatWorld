@@ -11,7 +11,7 @@
 // import axios from "axios"; // Axios for API calls
 // import socket from "../socket"; // Import socket instance for real-time communication
 import React, { useState, useEffect } from "react";
-import socket from "./socket_temp.js";
+import socket from "./socket.js";
 
 import ChatList from "./ChatList.jsx";   // ✅ lowercase "c" matches file
 import Sidebar from "./chatComp/SideBar.jsx";       // ✅ matches folder + file
