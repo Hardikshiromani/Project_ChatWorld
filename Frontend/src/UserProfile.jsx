@@ -1,5 +1,5 @@
 
-import pic1 from "../assets/pic1.png"; // Importing a default profile image
+import pic1 from "./assets/pic1.png"; // Importing a default profile image
 import { FaArrowLeft } from "react-icons/fa"; // Importing back arrow icon
 
 // UserProfile component displays user details based on the selected chat

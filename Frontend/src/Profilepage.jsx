@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { auth } from "./firebase";
+const BackURL=import.meta.env.VITE_API_URL;
 
 const Profilepage = () => {
   const [userName, setUsername] = useState("");
@@ -33,7 +34,7 @@ const Profilepage = () => {
         formData.append("profilePhoto", profilePhoto);
 
         const uploadRes = await axios.post(
-          "http://localhost:5000/api/user/create",
+          `${BackURL}/api/user/create`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -43,7 +44,7 @@ const Profilepage = () => {
         uploadedPhotoPath = uploadRes.data.path;
       }
 
-      const res = await axios.post("http://localhost:5000/api/user/create", {
+      const res = await axios.post(`${BackURL}/api/user/create`, {
         username: userName,
         password,
         bio,

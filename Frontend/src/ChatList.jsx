@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import pic1 from "../assets/pic1.png"; // Default profile image
+import pic1 from "./assets/pic1.png"; // Default profile image
 import axios from "axios";
 // ChatList component for displaying available chats
 const ChatList = ({ chats, onSelectChat }) => {
