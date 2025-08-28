@@ -1,0 +1,8 @@
+.sidebar-visible {
+    display: block; /* Visible state */
+  }
+  
+  .sidebar-hidden {
+    display: none; /* Hidden state */
+  }
+  
