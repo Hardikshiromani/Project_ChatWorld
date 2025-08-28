@@ -1,0 +1,52 @@
+const { DataTypes } = require("sequelize");
+
+const db = require("../db");
+
+const User = db.define("user", {
+  userid: {
+    type: DataTypes.BIGINT.UNSIGNED,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  username: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    unique: true,
+  },
+  password: { 
+    type: DataTypes.STRING(255),
+    allowNull: true,
+   },
+   bio:{
+    type:DataTypes.TEXT,
+    allowNull: true,
+   },
+   DOB:{
+    type:DataTypes.DATE,
+    allowNull: true,
+   },
+   phoneNumber:{
+    type:DataTypes.STRING(20),
+    allowNull: true,
+   },
+   profilePhoto:{
+    type: DataTypes.STRING(1000),
+    allowNull: true,
+    // field: 'profilepic', // Match column name in DB
+   },
+   lastseen: {
+    type: DataTypes.DATE,       // Sequelize's format
+    field: 'lastseen',          // Match column name in DB
+    allowNull: true,
+  },
+  fcmtoken:{
+    type:DataTypes.STRING(255),
+    allowNull:true
+  }
+   },  {
+    tableName: "user",
+    timestamps: false,
+});
+
+
+module.exports = User;
