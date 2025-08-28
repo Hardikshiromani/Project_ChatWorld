@@ -15,7 +15,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./chat/SideBar";       // ✅ matches folder + file
 import ChatRoom from "./chat/ChatRoom";     // ✅ exact match
 // import  UserProfile from "./chat/UserProfile.jsx";
- import UserProfile from "./chat/UserProfile"; // Displays user profile
+ import UserProfile from "./UserProfile.jsx"; // Displays user profile
 import ChatList from "./chat/ChatList"     // ✅ lowercase "c" matches file
 import Status from "./Status";
 import Contacts from "./Contacts";
