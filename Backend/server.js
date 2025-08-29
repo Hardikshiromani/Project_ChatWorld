@@ -20,10 +20,15 @@ const io = new Server(server, {
 // Middleware to allow CORS from specific origin
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend origin
-    credentials: true,
-  })
+ // frontend origin
+    origin:[ "http://localhost:5173",  
+    "https://project-chat-world.vercel.app" // for deployed frontend
+  ],
+credentials: true,
+
+})
 );
+
 
 // Importing routes for user, chat, and file handling
 const userRoutes = require("./routes/userRoutes");
