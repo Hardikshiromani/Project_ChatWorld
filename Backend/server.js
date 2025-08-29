@@ -13,7 +13,12 @@ const path = require("path"); // Import path module for file system operations
 // Middleware to handle CORS and JSON parsing
 const io = new Server(server, {
   cors: {
-    origin: "*",
+      origin: [
+      "http://localhost:5173", // local frontend
+      "https://project-chat-world.vercel.app" // deployed frontend
+    ],
+    methods: ["GET", "POST","PUT","DELETE"],
+    credentials:true
   },
 });
 
@@ -24,6 +29,7 @@ app.use(
     origin:[ "http://localhost:5173",  
     "https://project-chat-world.vercel.app" // for deployed frontend
   ],
+   methods: ["GET", "POST","PUT","DELETE"],
 credentials: true,
 
 })
