@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 // import Login from "./Pages/Login.jsx"; // Import Login form component
 import Login from "./Login.jsx";
-import { Routes, Route } from "react-router-dom"; // Import routing functionalities
+import { Routes, Route, BrowserRouter } from "react-router-dom"; // Import routing functionalities
 import Signup from "./Signup.jsx"; // Import Signup page component
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap for styling
 import Profilepage from "./Profilepage.jsx"; // Import Profile page component
@@ -46,12 +46,14 @@ function App() {
   return (
     <>
       {/* Define application routes */}
+      <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} /> {/* Default login route */}
         <Route path="/signup" element={<Signup />} /> {/* Signup page route */}
         <Route path="/Profilepage" element={<Profilepage />} /> {/* Profile page route */}
         <Route path="/ChatPage" element={<ChatPage />} /> {/* Chat page route */}
       </Routes>
+      </BrowserRouter>
     </>
   );
 }
