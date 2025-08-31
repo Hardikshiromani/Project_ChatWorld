@@ -49,8 +49,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} /> {/* Default login route */}
         <Route path="/signup" element={<Signup />} /> {/* Signup page route */}
-        <Route path="/Profilepage" element={<Profilepage />} /> {/* Profile page route */}
-        <Route path="/ChatPage" element={<ChatPage />} /> {/* Chat page route */}
+        <Route path="/profile" element={<Profilepage />} /> {/* Profile page route */}
+        <Route path="/chat" element={<ChatPage />} /> {/* Chat page route */}
       </Routes>
      </>
   );
