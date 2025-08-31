@@ -46,15 +46,13 @@ function App() {
   return (
     <>
       {/* Define application routes */}
-      <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} /> {/* Default login route */}
         <Route path="/signup" element={<Signup />} /> {/* Signup page route */}
         <Route path="/Profilepage" element={<Profilepage />} /> {/* Profile page route */}
         <Route path="/ChatPage" element={<ChatPage />} /> {/* Chat page route */}
       </Routes>
-      </BrowserRouter>
-    </>
+     </>
   );
 }
 
