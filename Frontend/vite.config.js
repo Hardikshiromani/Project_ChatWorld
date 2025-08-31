@@ -7,5 +7,8 @@ export default defineConfig({
    build: {
     outDir: 'dist', // Vercel expects static assets here
   },
-
+ 
+   server: {
+    historyApiFallback: true
+  }
 })
